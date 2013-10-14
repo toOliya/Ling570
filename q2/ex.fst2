@@ -1,0 +1,5 @@
+"a" "a" "b" => *none* 0
+"a" "a" => "bb" "bb" "c" 1
+"b" => *none* 0
+"a" "b" "a" => *none* 0
+"a" "c" => *none* 0

@@ -1,0 +1,11 @@
+Input line 1: "they" "can" "fish"
+	(9 states / 9 arcs reduce-> 8/8)
+Input line 1: "they" "can" "can" "fish"
+	(9 states / 8 arcs reduce-> 5/4)
+Input line 1: "they" "fish"
+	(4 states / 3 arcs)
+Input line 1: "they" "fish" "can"
+	(5 states / 4 arcs reduce-> 4/3)
+Input line 1: "they" "fish" "can" "can"
+	(0 states / 0 arcs)
+Empty or invalid result of composition with transducer examples1/wfst2.
