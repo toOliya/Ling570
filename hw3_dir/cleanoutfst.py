@@ -11,32 +11,44 @@ import os
 
 def main():
 
-  fn1 = sys.argv[1]   # processing the file with best scoring paths 
+  fn1 = sys.argv[1]   # fn1 - output file with best scoring paths 
   f1 = open(fn1, 'ru')
+  lines = f1.readlines()
+#  print lines
+#  print len(lines)
 
-  l = f1.readline()
-  while l:
-#     print l
-    if l[0] = 0:   # but need the other file to extract the string...
-      print '=> no'
-
-   ### get the name of the string from fn2
-   ### use regex to extract the output sequence
-   ### catch the probability in the end of line
-   ### address the 0 case
-
-
-    match = re.search(':\s([\w\"\s]+)\n', l)   # extracting the input string
-#    print match
-    l = f1.readline()
-    l = f1.readline()
-    if l[0:5] == "Input":
-      print match.group(1), '=> yes'
+  fn2 = sys.argv[2]   # fn2 - stderr; prints out unsplit input string, the number of states/arcs and/or the error message
+  f2 = open(fn2, 'ru')
+  i = 0
+  l2 = f2.readline()
+  while l2:
+    match = re.search(':\s*(\".+\")$', l2)   # get the name of the string from fn2
+    l2 = f2.readline()
+    l2 = f2.readline()
+    if l2[0:5] == 'Input':
+      input = match.group(1)
     else:
-      print match.group(1), '=> no' 
-      l = f2.readline()
+      input = match.group(1)
+      l2 = f2.readline() 
+    
+    if i < len(lines):
+      match_output = re.findall(':\s*(\"\w*\")\s*\/', lines[i])   # use regex to extract the output sequence; 
+# to print out *e*, the regex can be modified as follows: (':\s*(\"\w*\"|\*e\*)\s*\/')
+      match_prob = re.search('\d(\.\d+)?$', lines[i])   # catch the probability in the end of line
+      if lines[i][0] == '(':   # address the 0-string case in fn1
+        output = ' '.join(match_output)
+        prob = match_prob.group()
+      else:
+        output = '*none*'
+        prob = 0
+
+      print input, '=>', output, prob   # output format
+   
+    i += 1   # incrementing the counter for lines in fn1
 
   f2.close()
+
+  f1.close()
 
 
   
