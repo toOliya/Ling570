@@ -22,7 +22,7 @@ def main():
   i = 0
   l2 = f2.readline()
   while l2:
-    match = re.search(':\s*(\".+\")$', l2)   # get the name of the string from fn2
+    match = re.search(':\s*(\".+\"|\*e\*)$', l2)   # get the name of the string from fn2
     l2 = f2.readline()
     l2 = f2.readline()
     if l2[0:5] == 'Input':
