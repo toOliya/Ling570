@@ -42,7 +42,11 @@ def main():
         output = '*none*'
         prob = 0
 
-      print input, '=>', output.strip(), str(prob).strip()   # output format
+
+      if(output.strip() == ''):
+        print input, '=>', str(prob).strip()
+      else:
+        print input, '=>', output.strip(), str(prob).strip()   # output format
    
     i += 1   # incrementing the counter for lines in fn1
 
