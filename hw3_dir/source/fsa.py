@@ -1,6 +1,7 @@
 from decimal import *
 import re
 import utilities
+import transitionState
 import wordTransitions
 
 class Fsa:
@@ -34,7 +35,7 @@ class Fsa:
 			for j in range(0, len(tranStates)):
 				if(i == 1):
 					self.startState = tranStates[j].fromState
-					
+
 				self.transitionStates.append(tranStates[j])
 
 	def getPreviousTransitions(self, currentState):
@@ -91,6 +92,11 @@ class Fsa:
 		# this function will simply return a yes or no
 		splitValues = re.split("\s+", userInput)
 		listOfAcceptedStates = []
+
+		# if your FST has the same start and final state, it should accept an empty string. You can do this by giving it the empty-string symbol '*e*':
+		if(len(splitValues) == 1 and self.startState == self.endState):
+			tranState = transitionState.TransitionState(self.startState, self.endState, "*e*", ["*e*", "1"])
+			return [[tranState]]
 
 		# working our way back
 		# stack structure

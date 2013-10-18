@@ -60,15 +60,13 @@ class FstBugs(unittest.TestCase):
 		fsaObj.parse(testStr)
 
 		# "a" "a" => "b" 1
-		userInput = "\"a\" \"a\""
+		userInput = "*e*"
 
 		# this is an array of TransitionStates => [ tranState1, tranState2... ]
 		actualResult = fsaObj.returnHighestProb(userInput)
 
-		#expectedResult = "\"b\" 1"
-		#self.assertTrue(expectedResult == actualResult, actualResult + " <> " + expectedResult)
-
-
+		expectedResult = "1"
+		self.assertTrue(expectedResult == actualResult, actualResult + " <> " + expectedResult)
 
 class FstTransitionStates(unittest.TestCase):
 
