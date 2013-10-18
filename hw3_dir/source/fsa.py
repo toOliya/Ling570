@@ -94,7 +94,7 @@ class Fsa:
 		listOfAcceptedStates = []
 
 		# if your FST has the same start and final state, it should accept an empty string. You can do this by giving it the empty-string symbol '*e*':
-		if(len(splitValues) == 1 and self.startState == self.endState):
+		if(len(splitValues) == 1 and self.startState == self.endState and splitValues[0] == self.epsilonState):
 			tranState = transitionState.TransitionState(self.startState, self.endState, "*e*", ["*e*", "1"])
 			return [[tranState]]
 
