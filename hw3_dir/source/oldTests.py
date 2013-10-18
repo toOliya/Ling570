@@ -1,47 +1,3 @@
-import unittest
-import transitionState
-import utilities
-import fsa
-
-# homework 3 tests
-class FstBugs(unittest.TestCase):
-	def test_correctlyInitalFstWithaa(self):
-		fsaObj = fsa.Fsa()
-		testStr = """0
-		(0 (1 "a" *e*))
-		(1 (0 "a" "b"))
-		"""
-
-		fsaObj.parse(testStr)
-
-		# "a" "a" => "b" 1
-		userInput = "\"a\" \"a\""
-
-		# this is an array of TransitionStates => [ tranState1, tranState2... ]
-		actualResult = fsaObj.returnHighestProb(userInput)
-
-		expectedResult = "\"b\" 1"
-		self.assertTrue(expectedResult == actualResult, actualResult + " <> " + expectedResult)
-
-	def test_correctlyInitalFstWithaa(self):
-		fsaObj = fsa.Fsa()
-		testStr = """0
-		(0 (1 "a" *e*))
-		(1 (0 "a" "b"))
-		"""
-
-		fsaObj.parse(testStr)
-
-		# "a" "a" => "b" 1
-		userInput = "\"a\" \"a\""
-
-		# this is an array of TransitionStates => [ tranState1, tranState2... ]
-		actualResult = fsaObj.returnHighestProb(userInput)
-
-		expectedResult = "\"b\" 1"
-		self.assertTrue(expectedResult == actualResult, actualResult + " <> " + expectedResult)
-
-
 
 class FstTransitionStates(unittest.TestCase):
 
@@ -174,33 +130,7 @@ class FstTests(unittest.TestCase):
 
 		# this is an array of TransitionStates => [ tranState1, tranState2... ]
 		actualResult = fsaObj.returnHighestProb(userInput)
-		expectedResult = "\"PRO\" \"AUX\" \"VERB\" 0.096"
-		self.assertTrue(expectedResult == actualResult, actualResult + " <-> " + expectedResult)
-
-class IsBeginningState(unittest.TestCase):
-
-	def test_isBeginningState(self):
-		fsaObj = fsa.Fsa()
-		testStr = """S4
-		(S0 (S1 "they" "PRO" 1.0))
-		(S1 (S2 "can" "AUX" 0.8))
-		(S1 (S3 "fish" "VERB" 0.1))
-		(S1 (S3 "can" "VERB" 0.1))
-		(S2 (S3 "can" "VERB" 0.7))
-		(S2 (S3 "fish" "VERB" 0.3))
-		(S3 (S4 "fish" "NOUN" 0.5))
-		(S3 (S4 "can"  "NOUN" 0.1))
-		(S3 (S4 *e*  *e* 0.4))
-		"""
-
-		fsaObj.parse(testStr)
-
-		# "they" "can" "fish" => "PRO" "AUX" "NOUN" .7
-		userInput = "\"they\" \"can\" \"fish\""
-
-		# this is an array of TransitionStates => [ tranState1, tranState2... ]
-		actualResult = fsaObj.returnHighestProb(userInput)
-		expectedResult = "\"PRO\" \"AUX\" \"VERB\" 0.096"
+		expectedResult = "\"PRO\" \"AUX\" \"VERB\" *e* 0.096"
 		self.assertTrue(expectedResult == actualResult, actualResult + " <-> " + expectedResult)
 
 
@@ -624,9 +554,3 @@ class FsaTest(unittest.TestCase):
 		res = fsaObj.processInput(userInput)
 		
 		self.assertFalse(res)
-
-def main():
-	unittest.main()
-
-if __name__ == '__main__':
-	main()

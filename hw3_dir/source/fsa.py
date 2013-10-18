@@ -6,6 +6,7 @@ import wordTransitions
 class Fsa:
 	def __init__(self):
 		self.endState = ""
+		self.startState = ""
 		self.epsilonState = "*e*"
 		self.transitionStates = []
 		self.utilities = utilities.Utilities()
@@ -29,6 +30,9 @@ class Fsa:
 				continue
 
 			tranState = self.utilities.createTransitionState(line)
+
+			if(i == 1):
+				self.startState = tranState.fromState
 
 			self.transitionStates.append(tranState)
 
@@ -71,12 +75,11 @@ class Fsa:
 			for i in range(len(bestPath)):
 				idx = len(bestPath) - i - 1
 
-				if(bestPath[idx].output == self.epsilonState):
-					outputStr = outputStr + " " + bestPath[idx].output
-				else:
+				if(bestPath[idx].output != self.epsilonState):
 					outputStr = outputStr + " \"" + bestPath[idx].output + "\""
 
-                else: outputStr = outputStr + "*none*"   # unacceptable string outputs *none*
+		else: 
+			outputStr = outputStr + "*none*"   # unacceptable string outputs *none*
 
 		return (outputStr + " " + str(highestProbability.normalize())).strip()   # normalize() gets rid of extra zeros in Decimal
 
@@ -97,19 +100,19 @@ class Fsa:
 
 		# add in all the work objects
 		for i in range(0, len(finalStates)):
-			workObject = wordTransitions.WordTransitions(len(splitValues)-1, finalStates[i], [])
+			endIdx = len(splitValues)-1
+			workObject = wordTransitions.WordTransitions(endIdx, finalStates[i], [])
 			workSpace.append(workObject)
 
 		while(len(workSpace) > 0):
 			workObject = workSpace.pop(0)
 
 			wordIdx = workObject.wordIdx
-	
+			
 			isBeginningWord = wordIdx == 0
 			word = self.utilities.cleanseInput(splitValues[wordIdx])
 
 			state = workObject.currentState
-			
 			# create a new list
 			newStateList = []
 			
@@ -124,7 +127,7 @@ class Fsa:
 					listOfAcceptedStates.append(newStateList)
 				else:
 					previousWordIdx = wordIdx - 1
-					
+
 					# don't pump bad indexes in 
 					if(previousWordIdx < 0):
 						continue
@@ -155,16 +158,7 @@ class Fsa:
 
 	# (should be) private helper functions
 	def isBeginningState(self, currentState):
-		finalStates = self.getPreviousTransitions(currentState)
-
-		if(len(finalStates) == 0):
+		if(currentState == self.startState):
 			return True
-
-		# among my final states, are any not recursive? 
-		# This means we aren't at the end
-		for i in range(0, len(finalStates)):
-			finalState = finalStates[i]
-			if(finalState.toState != finalState.fromState):
-				return False
-
-		return True
+		else:
+			return False
