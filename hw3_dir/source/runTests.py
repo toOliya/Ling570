@@ -41,6 +41,33 @@ class FstBugs(unittest.TestCase):
 		expectedResult = "\"b\" 1"
 		self.assertTrue(expectedResult == actualResult, actualResult + " <> " + expectedResult)
 
+	def test_correctlyBuildsMultipleTransitionStatesFromSingleLine(self):
+		utils = utilities.Utilities()
+		testStr = """(A (A "a" "A") (B "b" "B") (B2 "b" "B"))"""
+
+		actualResult = utils.createTransitionState(testStr)
+
+		self.assertTrue(len(actualResult) == 3)
+
+	def test_correctlyInitalFstWithaa(self):
+		fsaObj = fsa.Fsa()
+		testStr = """A
+		(A (A "a" "A") (B "b" "B") (B2 "b" "B"))
+		(B (A "a" "A"))
+		(B2 (A *e* "E"))
+		"""
+
+		fsaObj.parse(testStr)
+
+		# "a" "a" => "b" 1
+		userInput = "\"a\" \"a\""
+
+		# this is an array of TransitionStates => [ tranState1, tranState2... ]
+		actualResult = fsaObj.returnHighestProb(userInput)
+
+		#expectedResult = "\"b\" 1"
+		#self.assertTrue(expectedResult == actualResult, actualResult + " <> " + expectedResult)
+
 
 
 class FstTransitionStates(unittest.TestCase):
@@ -303,7 +330,7 @@ class UtilitiesTests(unittest.TestCase):
 	def test_createTransitionState(self):
 		utils = utilities.Utilities();
 		testVal = '(F(Batman Joker What Is This))'
-		result = utils.createTransitionState(testVal)
+		result = utils.createTransitionState(testVal)[0]
 		self.assertTrue(result.fromState == 'F')
 		self.assertTrue(result.toState == 'Batman')
 		self.assertTrue(result.value == 'Joker')

@@ -42,7 +42,6 @@ def main():
         output = '*none*'
         prob = 0
 
-
       if(output.strip() == ''):
         print input, '=>', str(prob).strip()
       else:

@@ -53,16 +53,31 @@ class Utilities:
 		# 3) get the next paren list
 		# 4) get list of those items, they will be in the second level
 
-		fromStateSubStr = strVal[parenIndexes['start']:parenIndexes['end']]
-		fromStateValues = self.valsBeforeParen(fromStateSubStr)
+		workSpace = strVal[parenIndexes['start']:parenIndexes['end']]
+		fromStateValue = self.valsBeforeParen(workSpace)[0]
 
-		otherParenIndexes = self.parenIndex(fromStateSubStr)
+		transitionStates = []
 
-		toStateSubStr = fromStateSubStr[otherParenIndexes['start']:otherParenIndexes['end']]
-		toStateValues = self.valsBeforeParen(toStateSubStr)
+		# at this point, I need to process all of the remaining parens
+		otherParenIndexes = self.parenIndex(workSpace)
 
-		return transitionState.TransitionState(
-			fromStateValues.pop(0),
-			toStateValues.pop(0), 
-			self.cleanseInput(toStateValues.pop(0)), 
-			toStateValues)
+		while(otherParenIndexes['start'] != -1):
+			toStateSubStr = workSpace[otherParenIndexes['start']:otherParenIndexes['end']]
+			
+			toStateValues = self.valsBeforeParen(toStateSubStr)
+			
+			tempTransitionState = transitionState.TransitionState(
+				fromStateValue,
+				toStateValues.pop(0),
+				self.cleanseInput(toStateValues.pop(0)),
+				toStateValues)
+
+			transitionStates.append(tempTransitionState)
+
+			if(len(workSpace) == otherParenIndexes['end']):
+				break
+			else:
+				workSpace = workSpace[(otherParenIndexes['end']+1):]
+				otherParenIndexes = self.parenIndex(workSpace)
+
+		return transitionStates

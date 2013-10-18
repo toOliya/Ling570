@@ -29,12 +29,13 @@ class Fsa:
 			if(line == ''):
 				continue
 
-			tranState = self.utilities.createTransitionState(line)
+			tranStates = self.utilities.createTransitionState(line)
 
-			if(i == 1):
-				self.startState = tranState.fromState
-
-			self.transitionStates.append(tranState)
+			for j in range(0, len(tranStates)):
+				if(i == 1):
+					self.startState = tranStates[j].fromState
+					
+				self.transitionStates.append(tranStates[j])
 
 	def getPreviousTransitions(self, currentState):
 		currentStates = []
